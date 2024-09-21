@@ -1,0 +1,59 @@
+from sklearn.datasets import make_blobs
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+# Generating artificial dataset
+centers = [[2, 4], [6, 6], [1, 9]]
+n_classes = len(centers)
+data, labels = make_blobs(n_samples=150,
+centers=np.array(centers),
+random_state=1)
+# splitting data into 80 percent training and 20 percent testing
+X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.
+↪2, random_state=25)
+# Printing the sizes of training and testing dataset
+print("Training dataset size:", len(X_train))
+print("Testing dataset size:", len(X_test))
+# perform a KNN analysis of the simulated data
+#taking k value as 5
+k = 5
+knn = KNeighborsClassifier(n_neighbors=k)
+knn.fit(X_train, y_train)
+# Predicting test data
+y_predict = knn.predict(X_test)
+# output accuracy score
+accuracy = accuracy_score(y_test, y_predict)
+print(f"Accuracy: {accuracy:.2f}")
+# plot your different results
+# Plot the training data
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+plt.scatter(X_train[y_train == 0][:, 0], X_train[y_train == 0][:, 1], c='red',␣
+↪label='Class A')
+plt.scatter(X_train[y_train == 1][:, 0], X_train[y_train == 1][:, 1],␣
+↪c='yellow', label='Class B')
+plt.scatter(X_train[y_train == 2][:, 0], X_train[y_train == 2][:, 1], c='pink',␣
+↪label='Class C')
+plt.title('Training Data')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.legend()
+# Plotting testing data
+plt.subplot(1, 2, 2)
+plt.scatter(X_test[y_test == 0][:, 0], X_test[y_test == 0][:, 1], c='red',␣
+↪marker='o', label='Class A')
+plt.scatter(X_test[y_test == 1][:, 0], X_test[y_test == 1][:, 1], c='yellow',␣
+↪marker='o', label='Class B')
+plt.scatter(X_test[y_test == 2][:, 0], X_test[y_test == 2][:, 1], c='pink',␣
+↪marker='o', label='Class C')
+plt.scatter(X_test[y_predict != y_test][:, 0], X_test[y_predict != y_test][:,␣
+↪1], c='black', marker='x', label='Misclassified')
+plt.title('Testing Data ')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.legend()
+plt.tight_layout()
+plt.show()
